@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class WelcomeController {
+public class TallyController {
     @Autowired
-    private WelcomeRepository repository;
+    private TallyRepository repository;
 
-    @GetMapping("/welcome")
-    public List<String> welcome() {
+    @GetMapping("/tallies")
+    public List<String> getAllTallies() {
         return repository.findAll().stream()
-                .map(Person::toString)
+                .map(Tally::toString)
                 .toList();
     }
 
