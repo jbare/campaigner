@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,11 @@ public class TallyController {
     }
 
     @PostMapping("/tallies")
-    public void submitTallies(@RequestBody List<Tally> tallies) {
-        repository.saveAll(tallies);
+    public void submitTallies(@RequestBody final List<Tally> tallies) {
+        repository.saveAll(
+                tallies.stream()
+                        .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
+                        .toList());
     }
 
 }

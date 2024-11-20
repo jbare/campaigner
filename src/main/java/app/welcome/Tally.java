@@ -24,6 +24,14 @@ public class Tally {
         this.date = date;
     }
 
+    public Tally newWithDate(final Date date) {
+        return new Tally(this.id, this.signatures, this.money, this.pamphlets, date);
+    }
+
+    public boolean hasDate() {
+        return this.date != null;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
