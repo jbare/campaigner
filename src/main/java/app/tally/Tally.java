@@ -1,4 +1,4 @@
-package app.welcome;
+package app.tally;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

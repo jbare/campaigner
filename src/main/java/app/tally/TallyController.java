@@ -1,6 +1,6 @@
-package app.welcome;
+package app.tally;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -9,8 +9,14 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class TallyController {
-    @Autowired
-    private TallyRepository repository;
+    private final TallyRepository repository;
+    private final KafkaTemplate<String, Tally> kafkaTemplate;
+
+    public TallyController(final TallyRepository repository,
+                           final KafkaTemplate<String, Tally> kafkaTemplate) {
+        this.repository = repository;
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @GetMapping("/tallies")
     public List<String> getAllTallies() {
@@ -21,6 +27,10 @@ public class TallyController {
 
     @PostMapping("/tallies")
     public void submitTallies(@RequestBody final List<Tally> tallies) {
+        tallies.stream()
+                .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
+                .forEach(t -> kafkaTemplate.send("tally_topic", t));
+
         repository.saveAll(
                 tallies.stream()
                         .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
