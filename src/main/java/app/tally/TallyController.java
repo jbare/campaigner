@@ -10,15 +10,15 @@ import java.util.List;
 @CrossOrigin
 public class TallyController {
     private final TallyRepository repository;
-    private final KafkaTemplate<String, Tally> kafkaTemplate;
+//    private final KafkaTemplate<String, Tally> kafkaTemplateTally;
     private final KafkaTemplate<String, String> kafkaTemplateTest;
 
     public TallyController(final TallyRepository repository,
-                           final KafkaTemplate<String, Tally> kafkaTemplate,
+//                           final KafkaTemplate<String, Tally> kafkaTemplateTally,
                            final KafkaTemplate<String, String> kafkaTemplateTest
                            ) {
         this.repository = repository;
-        this.kafkaTemplate = kafkaTemplate;
+//        this.kafkaTemplateTally = kafkaTemplateTally;
         this.kafkaTemplateTest = kafkaTemplateTest;
     }
 
@@ -44,6 +44,12 @@ public class TallyController {
     @PostMapping("/test")
     public void test() {
         kafkaTemplateTest.send("test_topic", "Test");
+
+    }
+
+    @PostMapping("/btest")
+    public void bTest() {
+        kafkaTemplateTest.send("baeldung", "B Test");
 
     }
 
