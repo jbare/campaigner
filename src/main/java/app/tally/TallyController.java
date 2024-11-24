@@ -10,16 +10,13 @@ import java.util.List;
 @CrossOrigin
 public class TallyController {
     private final TallyRepository repository;
-//    private final KafkaTemplate<String, Tally> kafkaTemplateTally;
-    private final KafkaTemplate<String, String> kafkaTemplateTest;
+    private final KafkaTemplate<String, Tally> kafkaTemplateTally;
 
     public TallyController(final TallyRepository repository,
-//                           final KafkaTemplate<String, Tally> kafkaTemplateTally,
-                           final KafkaTemplate<String, String> kafkaTemplateTest
+                           final KafkaTemplate<String, Tally> kafkaTemplateTally
                            ) {
         this.repository = repository;
-//        this.kafkaTemplateTally = kafkaTemplateTally;
-        this.kafkaTemplateTest = kafkaTemplateTest;
+        this.kafkaTemplateTally = kafkaTemplateTally;
     }
 
     @GetMapping("/tallies")
@@ -31,26 +28,10 @@ public class TallyController {
 
     @PostMapping("/tallies")
     public void submitTallies(@RequestBody final List<Tally> tallies) {
-//        tallies.stream()
-//                .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
-//                .forEach(t -> kafkaTemplate.send("tally_topic", t));
-
-        repository.saveAll(
-                tallies.stream()
-                        .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
-                        .toList());
-    }
-
-    @PostMapping("/test")
-    public void test() {
-        kafkaTemplateTest.send("test_topic", "Test");
-
-    }
-
-    @PostMapping("/btest")
-    public void bTest() {
-        kafkaTemplateTest.send("baeldung", "B Test");
-
+        System.out.println("Submitting tallies: " + tallies);
+        tallies.stream()
+                .map(t -> t.hasDate() ? t : t.newWithDate(new Date()))
+                .forEach(t -> kafkaTemplateTally.send("tally_topic", t));
     }
 
 }

@@ -1,5 +1,7 @@
 package app.tally;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,13 +12,18 @@ import java.util.Objects;
 public class Tally {
 
     @Id
-    private final String id;
-    private final Long signatures;
-    private final Double money;
-    private final Long pamphlets;
-    private final Date date;
+    private String id;
+    private Long signatures;
+    private Double money;
+    private Long pamphlets;
+    private Date date;
 
-    public Tally(final String id, final Long signatures, final Double money, final Long pamphlets, final Date date) {
+    @JsonCreator
+    public Tally(@JsonProperty("id") final String id,
+                 @JsonProperty("signatures") final Long signatures,
+                 @JsonProperty("money") final Double money,
+                 @JsonProperty("pamphlets") final Long pamphlets,
+                 @JsonProperty("date") final Date date) {
         this.id = id;
         this.signatures = signatures;
         this.money = money;
@@ -30,6 +37,46 @@ public class Tally {
 
     public boolean hasDate() {
         return this.date != null;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public Long getSignatures() {
+        return signatures;
+    }
+
+    public void setSignatures(final Long signatures) {
+        this.signatures = signatures;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(final Double money) {
+        this.money = money;
+    }
+
+    public Long getPamphlets() {
+        return pamphlets;
+    }
+
+    public void setPamphlets(final Long pamphlets) {
+        this.pamphlets = pamphlets;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(final Date date) {
+        this.date = date;
     }
 
     @Override
