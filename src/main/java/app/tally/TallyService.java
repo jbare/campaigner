@@ -16,4 +16,9 @@ public class TallyService {
     public void receiveMessage(final Tally tally) {
         tallyRepository.save(tally);
     }
+
+    @KafkaListener(topics = "test_topic", groupId = "test_group")
+    public void receiveMessage(final String message) {
+        System.out.println("Received this through Kafka: " + message);
+    }
 }

@@ -7,7 +7,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CampaignerConfiguration {
     @Bean
-    public NewTopic exampleTopic() {
+    public NewTopic tallyTopic() {
         return new NewTopic("tally_topic", 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic testTopic() {
+        return new NewTopic("test_topic", 1, (short) 1);
     }
 }
