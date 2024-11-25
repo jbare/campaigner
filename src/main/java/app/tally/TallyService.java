@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TallyService {
+    private static final String TALLY_TOPIC = "tally_topic";
 
     private final TallyRepository tallyRepository;
 
@@ -12,7 +13,7 @@ public class TallyService {
         this.tallyRepository = tallyRepository;
     }
 
-    @KafkaListener(topics = "tally_topic")
+    @KafkaListener(topics = TALLY_TOPIC)
     public void receiveTally(final Tally tally) {
         System.out.println("Receiving tally: " + tally);
 
