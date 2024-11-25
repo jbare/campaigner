@@ -36,6 +36,19 @@ public class CampaignerConfiguration {
     }
 
     @Bean
+    public KafkaTemplate<String, Tally> kafkaTemplateTally() {
+        return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Tally> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Tally> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+
+    @Bean
     public ProducerFactory<String, Tally> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
@@ -48,11 +61,6 @@ public class CampaignerConfiguration {
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
-    }
-
-    @Bean
-    public KafkaTemplate<String, Tally> kafkaTemplateTally() {
-        return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
@@ -74,13 +82,5 @@ public class CampaignerConfiguration {
                 JsonDeserializer.TRUSTED_PACKAGES,
                 "*");
         return new DefaultKafkaConsumerFactory<>(props);
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Tally> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Tally> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
     }
 }

@@ -12,7 +12,7 @@ public class TallyService {
         this.tallyRepository = tallyRepository;
     }
 
-    @KafkaListener(topics = "tally_topic", groupId = "campaigner_group")
+    @KafkaListener(topics = "tally_topic")
     public void receiveTally(final Tally tally) {
         System.out.println("Receiving tally: " + tally);
 
